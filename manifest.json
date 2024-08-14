@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "Redirector-izer",
+    "version": "1.0",
+    "description": "Blocks access to the chrome://extensions/ page.",
+    "permissions": [
+      "webRequest",
+      "webRequestBlocking",
+      "tabs"
+    ],
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "icons": {
+      "128": "icons/icon128.png"
+    }
+  }
+  

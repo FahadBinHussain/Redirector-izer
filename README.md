@@ -1,2 +1,2 @@
 # Redirector-izer
-Chrome Extensions Page Blocker
+Chrome Extensions (chrome://extensions/) Page Blocker/Redirector
