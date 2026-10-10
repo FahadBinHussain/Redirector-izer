@@ -3,8 +3,8 @@ name: Package and Release Redirector-izer Extension
 on:
   push:
     branches:
-      - main  
-  workflow_dispatch: 
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,45 +12,35 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2  
+      uses: actions/checkout@v4
 
     - name: Create ZIP Archive
-      run: |
-        zip -r Redirector-izer.zip ./*  # Create a zip file named Redirector-izer.zip
+      run: zip -r Redirector-izer.zip ./*
 
     - name: Upload ZIP Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Redirector-izer
-        path: Redirector-izer.zip 
+        path: Redirector-izer.zip
 
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - name: Download ZIP Artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: Redirector-izer
 
     - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-      with:
-        tag_name: v1.0  # The tag to associate with the release
-        release_name: "Redirector-izer v1.0"
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: Redirector-izer.zip
-        asset_name: Redirector-izer.zip
-        asset_content_type: application/zip
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if gh release view v1.0; then
+          echo "release v1.0 already exists — nothing to create"
+        else
+          gh release create v1.0 Redirector-izer.zip --title "Redirector-izer v1.0"
+        fi
