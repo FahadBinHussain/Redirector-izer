@@ -21,5 +21,9 @@
   workflow was red on every push even though nothing else broke. artifact
   actions must stay on v4+, and `actions/create-release` /
   `actions/upload-release-asset` are archived — use the `gh` cli instead.
+- gotcha (2026-10-11): the release job downloads the artifact instead of
+  checking out the repo, so `gh release view/create` has no git context — it
+  needs `GH_REPO: ${{ github.repository }}` in its env or it dies with
+  "fatal: not a git repository".
 - the readme CI badge points at this workflow — a red badge here is a broken
   build, not cosmetic, so fix it rather than removing the badge.
