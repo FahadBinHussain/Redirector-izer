@@ -25,5 +25,15 @@
   checking out the repo, so `gh release view/create` has no git context — it
   needs `GH_REPO: ${{ github.repository }}` in its env or it dies with
   "fatal: not a git repository".
+- gotcha (2026-10-11): actions/checkout@v4, upload-artifact@v4 and
+  download-artifact@v4 emit "node.js 20 is deprecated" annotations because
+  runners force them onto node 24. bumped to the node-24 majors
+  (checkout@v7, upload-artifact@v7, download-artifact@v8) — keep them
+  current so the badge stays annotation-free.
+- gotcha (2026-10-11): `git push` hangs forever in this repo because the
+  https remote has no stored credential helper. get the token via
+  `github-account.ps1 run auth token` (the helper's `run` prefixes `gh`
+  itself — do NOT pass `gh` in the args) and push to
+  `https://x-access-token:<token>@github.com/FahadBinHussain/Redirector-izer.git`.
 - the readme CI badge points at this workflow — a red badge here is a broken
   build, not cosmetic, so fix it rather than removing the badge.
